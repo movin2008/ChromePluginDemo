@@ -1,0 +1,80 @@
+{
+
+	"name": "水也测试",
+	"version": "1.0.0",
+	"description": "简单的Chrome扩展demo",
+    "icons": {
+       "128": "images/logo.png",
+       "16": "images/logo_16.png",
+       "48": "images/logo_48.png"
+    },
+	
+	"homepage_url":"http://www.shuiyes.com",
+	
+	// popup弹框，浏览器右上角图标设置，browser_action、page_action、app必须三选一
+    "browser_action": {
+       "default_icon": "images/logo.png",
+       "default_title": "browser action title",
+	   "default_popup": "popup/index.html"
+    },
+
+    // 命令打开popup弹框
+    "commands": {
+        "_execute_browser_action": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+F",
+                "mac": "MacCtrl+Shift+F"
+            },
+            "description": "Opens popup.html"
+        }
+    },
+
+	// 权限申请
+	"permissions":
+	[
+		"contextMenus",       // 右键菜单
+		"tabs",               // 标签
+		"notifications",      // 通知
+		"webRequest",         // web请求
+		"webRequestBlocking", // web请求拦截
+		"storage",            // 插件本地存储
+		"http://*/*",         // 可以通过executeScript或者insertCSS访问的网站
+		"https://*/*"         // 可以通过executeScript或者insertCSS访问的网站
+	],
+	
+	// 会一直常驻的后台JS或后台页面
+	"background":
+	{
+		// 2种指定方式，如果指定JS，那么会自动生成一个背景页
+		//"page": "background.html"
+		"scripts": ["js/background.js"],
+		"persistent": true
+	},
+	
+	// 需要直接注入页面的JS
+	"content_scripts": 
+	[
+		{
+			//"matches": ["http://*/*", "https://*/*"],
+			"matches": ["<all_urls>"],
+			"js": ["js/jquery-2.2.4.min.js", "js/content-script.js"],
+			// 慎用，全局生效
+			"css": ["css/custom.css"],
+			// "document_start", "document_end", or "document_idle"
+			"run_at": "document_idle"
+		}
+	],
+	
+	// 普通页面能够直接访问的插件资源列表，如果不设置是无法直接访问的
+	"web_accessible_resources": ["js/inject.js", "js/hacked.js"],
+
+	
+	// 清单文件的版本，这个必须写，而且必须是2
+	"manifest_version": 2
+	
+	// 参考文章
+	// https://www.cnblogs.com/liuxianan/p/chrome-plugin-develop.html
+	// https://zhuanlan.zhihu.com/p/438896257
+	// https://github.com/GoogleChrome/chrome-extensions-samples
+	// https://jingyan.baidu.com/article/d169e18662aa60436611d8c1.html
+}
